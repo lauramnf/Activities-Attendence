@@ -11,15 +11,12 @@ def conta_frequencia_atividades(tipo, semana, pontos):
 		file = open(pasta+'/'+nome)
 		csv_f = csv.DictReader(file)
 		for row in csv_f:
-
 			nome = row['Nome Completo'].lower()
-			nome = nome.replace(' (convidado)', '')
-			nome = nome.replace(' (guest)', '')
-			
-			for name in presenca.keys():
-				if nome in name:
-					nome = name
-			
+			nome = re.sub('\s\(convidado\).*', '', nome)
+			nome = re.sub('\s\(guest\).*', '', nome)
+			nome = re.sub('\sentrou.*', '', nome)
+			nome = re.sub('\ssaiu.*', '', nome)
+			print(nome)
 			if nome == 'live:.b44abc4b05463b85':
 				nome = 'ana beatriz ferreira da silva'
 			elif nome == 'live:.cid.235763fda51d58cd':
@@ -36,13 +33,22 @@ def conta_frequencia_atividades(tipo, semana, pontos):
 				# nome = 'live:.cid.32b110fabe43d0b0'
 			# elif nome == 'live:.cid.6a8df8fb916cf458':
 				# nome = 'live:.cid.6a8df8fb916cf458'
-			# elif nome == ''
-				# nome = 'paula de fátima':
+			elif nome == 'live:.cid.9344696efdebd18a':
+				nome = 'paula de fátima'
 			elif nome == 'live:.cid.74e6e116ee7a641d':
 				nome = 'caroline da silva'
+			elif 'ana clara' in nome:
+				nome = 'ana clara uecker'
 			elif nome == 'angela oliveira':
-				nome = 'ângela oliveira'
-			presenca[nome] = presenca.get(nome, 0) + pontos		 	 
+				nome = 'angela oliveira'
+			elif 'barbara jordana' in nome:
+				nome = 'bárbara jordana da silva'
+			elif 'débora ferreira' in nome:
+				nome = 'débora lígia ferreira da silva'
+			elif 'gabriela soares' in nome:
+				nome = 'gabriela soares fonseca andrade'
+			
+			presenca[nome] = presenca.get(nome.lower(), 0) + pontos		 	 
 		file.close()
 	return(presenca)
 
@@ -54,11 +60,7 @@ def conta_presenca_final(semana):
 		file = open(pasta+'/'+nome)
 		csv_f = csv.DictReader(file)
 		for row in csv_f:
-			nome = row['Nome']
-			for name in presenca.keys():
-				if nome in name:
-					nome = name
-			presenca[nome] = presenca.get(nome, 0) + int(row['Pontos'])		 	 
+			presenca[row['Nome']] = presenca.get(row['Nome'], 0) + int(row['Pontos'])		 	 
 		file.close()
 	return(presenca)
 
