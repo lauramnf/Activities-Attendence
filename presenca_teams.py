@@ -16,7 +16,6 @@ def conta_frequencia_atividades(tipo, semana, pontos):
 			nome = re.sub('\s\(guest\).*', '', nome)
 			nome = re.sub('\sentrou.*', '', nome)
 			nome = re.sub('\ssaiu.*', '', nome)
-			print(nome)
 			if nome == 'live:.b44abc4b05463b85':
 				nome = 'ana beatriz ferreira da silva'
 			elif nome == 'live:.cid.235763fda51d58cd':
@@ -30,7 +29,7 @@ def conta_frequencia_atividades(tipo, semana, pontos):
 			elif nome == 'live:.cid.bc6ce3929d590f6f':
 				nome = 'thalita barros'
 			# elif nome == 'live:.cid.32b110fabe43d0b0':
-				# nome = 'live:.cid.32b110fabe43d0b0'
+				# nome = 'live:.cid.32b110fabe43d0ib0'
 			# elif nome == 'live:.cid.6a8df8fb916cf458':
 				# nome = 'live:.cid.6a8df8fb916cf458'
 			elif nome == 'live:.cid.9344696efdebd18a':
