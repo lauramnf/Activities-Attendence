@@ -36,6 +36,10 @@ def conta_frequencia_atividades(tipo, semana, pontos):
 				nome = 'paula de fátima'
 			elif nome == 'live:.cid.74e6e116ee7a641d':
 				nome = 'caroline da silva'
+			elif nome == 'maria eduarda':
+				nome = 'maria eduarda dos santos barbosa'
+			elif nome == 'thais barros':
+				nome = 'thais araujo'
 			elif 'ana clara' in nome:
 				nome = 'ana clara uecker'
 			elif nome == 'angela oliveira':
