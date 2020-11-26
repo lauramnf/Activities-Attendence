@@ -4,78 +4,54 @@ import os
 
 
 def conta_frequencia_atividades(tipo, semana, pontos):
+# Função para contar a frequência de atividades semanais online pelo Microsoft Teams
 	presenca = {}
 	diretorio = os.getcwd()
 	pasta = diretorio+'/Semana'+semana+'_'+tipo
+	# Itera sobre cada um dos arquivos csv correspondentes a presença de uma aula
 	for nome in os.listdir(pasta):
 		file = open(pasta+'/'+nome)
 		csv_f = csv.DictReader(file)
 		for row in csv_f:
+			# Corrige o nome dos alunos conforme necessário para que haja correspondência
 			nome = row['Nome Completo'].lower()
 			nome = re.sub('\s\(convidado\).*', '', nome)
 			nome = re.sub('\s\(guest\).*', '', nome)
-			nome = re.sub('\sentrou.*', '', nome)
-			nome = re.sub('\ssaiu.*', '', nome)
-			if nome == 'live:.b44abc4b05463b85':
-				nome = 'ana beatriz ferreira da silva'
-			elif nome == 'live:.cid.235763fda51d58cd':
-				nome = 'larissa silva paiva'
-			elif nome == 'live:.cid.f70f038f492cf762':
-				nome = 'bárbara jordana da silva'
-			elif nome == 'live:.cid.3cfcaa8c129a1136':
-				nome = 'davi silva'
-			elif nome == 'live:.cid.ec4be6c1f9167e62':
-				nome = 'sarah souza'
-			elif nome == 'live:.cid.bc6ce3929d590f6f':
-				nome = 'thalita barros'
-			# elif nome == 'live:.cid.32b110fabe43d0b0':
-				# nome = 'live:.cid.32b110fabe43d0ib0'
-			# elif nome == 'live:.cid.6a8df8fb916cf458':
-				# nome = 'live:.cid.6a8df8fb916cf458'
-			elif nome == 'live:.cid.9344696efdebd18a':
-				nome = 'paula de fátima'
-			elif nome == 'live:.cid.74e6e116ee7a641d':
-				nome = 'caroline da silva'
-			elif 'ana clara' in nome:
-				nome = 'ana clara uecker'
-			elif nome == 'angela oliveira':
-				nome = 'angela oliveira'
-			elif 'barbara jordana' in nome:
-				nome = 'bárbara jordana da silva'
-			elif 'débora ferreira' in nome:
-				nome = 'débora lígia ferreira da silva'
-			elif 'gabriela soares' in nome:
-				nome = 'gabriela soares fonseca andrade'
-			
-			presenca[nome] = presenca.get(nome.lower(), 0) + pontos		 	 
+			# Soma frequência da pessoa
+			presenca[nome] = presenca.get(nome, 0) + pontos
 		file.close()
 	return(presenca)
 
 def conta_presenca_final(semana):
+# Função para o cálculo da frequência total da semana
 	presenca = {}
 	diretorio = os.getcwd()
 	pasta = diretorio+'/Semana'+semana+'_completo'
+	# Itera sobre cada um dos arquivos csv correspondentes a presença de uma aula
 	for nome in os.listdir(pasta):
-		file = open(pasta+'/'+nome)
-		csv_f = csv.DictReader(file)
+		file = open(pasta+'/'+nome) # Abre cada um dos arquivos
+		csv_f = csv.DictReader(file) # Le arquivo
 		for row in csv_f:
-			presenca[row['Nome']] = presenca.get(row['Nome'], 0) + int(row['Pontos'])		 	 
+			presenca[row['Nome']] = presenca.get(row['Nome'], 0) + int(row['Pontos'])
 		file.close()
 	return(presenca)
 
 def ajeita_dict(dicionario):
+# Função para organizar o dicionario {nome_da_pessoa: pontuação} em uma lista de dicionarios [{nome: nome_da_pessoa, pontos: pontuação}]
 	planilha_list = []
 	planilha_dict = {}
-	for name, frequency in dicionario.items():
+	for name, frequency in dicionario.items(): # Itera sobre cada elemento do dicionário
 		planilha_dict['Nome'] = name
 		planilha_dict['Pontos'] = frequency
 		planilha_dict_copy = planilha_dict.copy()
 		planilha_list.append(planilha_dict_copy)
 	return planilha_list
 
-def cria_planilha(lista_planilha, tipo, semana): 
+def cria_planilha(lista_planilha, tipo, semana):
+# Função pra criar uma planilha com as pontuações resultantes
 	keys = ['Nome', 'Pontos']
 	diretorio = os.getcwd()
+	# Cria arquivo csv
 	with open(diretorio+'/Semana'+semana+'_completo/'+tipo+'_semana'+semana+'.csv', 'w') as file_escrita:
 		writer = csv.DictWriter(file_escrita, fieldnames = keys)
 		writer.writeheader()
